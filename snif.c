@@ -195,7 +195,7 @@ void got_packet(u_char *dump_handle, const struct pcap_pkthdr *header, const u_c
 	static long long count = 1;		/* packet counter */
 	static long long fcount = 1;		/* счетчик файлов */
 	static unsigned int fsize = 0;		/* размер файла */
-	static struct sp all;
+	static struct ses_pack all;
 	static bool in_use = false;
 
 	const struct sniff_ethernet *ethernet;	/* The ethernet header [1] */
@@ -316,13 +316,6 @@ int main(int argc, char *argv[])
 	dump_handle.dumpfile = pcap_dump_open(handle, fname);
 	char data[sizeof(dump_handle)];
 	memcpy(data, &dump_handle, sizeof(dump_handle));
-	
-	/* Компиляция и применения фильтра */
-	if (pcap_compile(handle, &fp, filter_exp, 0, net) == -1)
-	{
-		fprintf(stderr, "Couldn't parse filter %s: %s\n", filter_exp, pcap_geterr(handle));
-		return(2);
-	}
 
 	if (pcap_setfilter(handle, &fp) == -1)
 	{
